@@ -3,7 +3,6 @@ import os
 import glob
 import string
 import re
-# import pyodbc
 
 
 current_dt = datetime.datetime.now()
@@ -18,28 +17,34 @@ class TeradataToSQLServer:
 
 	def reformatDDL(self):
 
-		replacements = {' SET':'',
-					'dedw_stage': 'dSTAGE.dbo',
-					'CHARACTER LATIN' : '',
-					'aswift': 'asft_isr7',
-					'TIMESTAMP(0)' : 'datetime2',
-					}
-
+		replacements = {}
 
 		for filename in glob.glob('*.ddl'):
 			table_name = filename.replace('.ddl', '')
-			tablename = 'dSTAGE.dbo.' + table_name
+			tablename = table_name.replace('_wrk', '_hst')
+			print(table_name)
+
+			repl_line = """'hdfs://swiftdev1/user/hive/warehouse/dev.db/""" + table_name + """';"""
+			print(repl_line)
+
 
 			with open(filename) as infile:
 				infile = infile.readlines()
 
-			with open(tablename + '_new' + '.ddl' , 'w') as outfile:
+			with open(tablename + '.ddl' , 'w') as outfile:
 				for line in infile:
 					for src, target in replacements.iteritems():
 						line = line.replace(src, target)
+					if line.startswith(')'):
+						line = line.replace(')', ')\nPARTITIONED BY (SV_PARTN_PERIOD INT)\n')
+
+					if line.startswith(repl_line):
+						line = line.replace(repl_line, 
+							repl_line + """\ntblproperties("orc.compress"="zlib");""")
 
 
 					outfile.write(line)
+
 
 
 def main(args=None):

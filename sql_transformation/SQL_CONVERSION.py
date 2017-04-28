@@ -67,25 +67,25 @@ class TeradataToSQLServer:
 					"\n-- *"
 					"\n-- ***********************************************************************")
 
-			static_columns = ('    RRN_FIELD           VARCHAR(10),'
-							'\n    SV_MANIP_TYPE       CHAR(1),'
-							'\n    SV_TRANS_ID         BIGINT,'
-							'\n    SV_TRANS_ROW_SEQ    INT,'
-							'\n    SV_SENDING_TABLE    VARCHAR(25),'
-							'\n    SV_SENDING_DBMS     VARCHAR(25),'
-							'\n    SV_SENDING_SERVER   VARCHAR(25),'
-							'\n    SV_TRANS_TIMESTAMP  VARCHAR(20),'
-							'\n    SV_TRANS_USERNAME   VARCHAR(25),'
-							'\n    SV_PROGRAM_NAME     VARCHAR(25),'
-							'\n    SV_JOB_NAME         VARCHAR(25),'
-							'\n    SV_JOB_USER         VARCHAR(25),'
-							'\n    SV_JOB_NUMBER       VARCHAR(25),'
-							'\n    SV_OP_TIMESTAMP     VARCHAR(20),'
-							'\n    SV_FILE_MEMBER      VARCHAR(25),'
-							'\n    SV_RECEIVER_LIBRARY VARCHAR(25),'
-							'\n    SV_RECEIVER_NAME    VARCHAR(25),'
-							'\n    SV_JOURNAL_SEQNO    BIGINT,'
-							'\n    ETL_TS 				datetime2')
+			# static_columns = ('    RRN_FIELD           VARCHAR(10),'
+			# 				'\n    SV_MANIP_TYPE       CHAR(1),'
+			# 				'\n    SV_TRANS_ID         BIGINT,'
+			# 				'\n    SV_TRANS_ROW_SEQ    INT,'
+			# 				'\n    SV_SENDING_TABLE    VARCHAR(25),'
+			# 				'\n    SV_SENDING_DBMS     VARCHAR(25),'
+			# 				'\n    SV_SENDING_SERVER   VARCHAR(25),'
+			# 				'\n    SV_TRANS_TIMESTAMP  VARCHAR(20),'
+			# 				'\n    SV_TRANS_USERNAME   VARCHAR(25),'
+			# 				'\n    SV_PROGRAM_NAME     VARCHAR(25),'
+			# 				'\n    SV_JOB_NAME         VARCHAR(25),'
+			# 				'\n    SV_JOB_USER         VARCHAR(25),'
+			# 				'\n    SV_JOB_NUMBER       VARCHAR(25),'
+			# 				'\n    SV_OP_TIMESTAMP     VARCHAR(20),'
+			# 				'\n    SV_FILE_MEMBER      VARCHAR(25),'
+			# 				'\n    SV_RECEIVER_LIBRARY VARCHAR(25),'
+			# 				'\n    SV_RECEIVER_NAME    VARCHAR(25),'
+			# 				'\n    SV_JOURNAL_SEQNO    BIGINT,'
+			# 				'\n    ETL_TS 				datetime2')
 
 
 			with open(filename) as infile:
@@ -148,8 +148,8 @@ class TeradataToSQLServer:
 					if line.startswith(';'):
 						line = line.replace(';', '')
 
-					if line.startswith(')'):
-						line = line.replace(')', static_columns)
+					# if line.startswith(')'):
+						# line = line.replace(')', static_columns)
 
 					if line.startswith('COMMENT ON TABLE'):
 						comment = re.findall(r'IS ([^|]*)', line)
